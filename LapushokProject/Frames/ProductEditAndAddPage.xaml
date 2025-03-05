@@ -15,6 +15,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Vertical">
             <TextBlock>Название</TextBlock>
+            <TextBlock>Название</TextBlock>
         </StackPanel>
     </Grid>
 </Window>
