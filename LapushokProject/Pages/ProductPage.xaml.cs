@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LapushokProject.Frames;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace LapushokProject.Pages
             {
                 countPage = App.db.Product.Count() / 20 + 1;
             }
-            ProductListLW.ItemsSource = App.db.Product.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
         }
 
         private void Hyperlink_Click_Next(object sender, RoutedEventArgs e)
@@ -49,19 +50,34 @@ namespace LapushokProject.Pages
                 MessageBox.Show("Больше страниц нет");
                 return;
             }
-            ProductListLW.ItemsSource = App.db.Product.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            IndexPageTB.Text = indexpage.ToString();
         }
         private void Hyperlink_Click_Back(object sender, RoutedEventArgs e)
         {
-            if(indexpage == 1)
+            if (indexpage == 1)
             {
                 MessageBox.Show("Вы в самом начале!!!!");
                 return;
             }
             result -= 20;
-            indexpage--;    
-            ProductListLW.ItemsSource = App.db.Product.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            indexpage--;
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            IndexPageTB.Text = indexpage.ToString();
+
         }
 
+
+
+        private void ProductListLW_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ProductEditAndAddPage editAddPage = new ProductEditAndAddPage();
+            editAddPage.ShowDialog();
+        }
+
+        private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).Where(x => x.Name.StartsWith(SearchTB.Text)).ToList();
+        }
     }
 }

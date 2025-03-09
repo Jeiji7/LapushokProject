@@ -14,8 +14,13 @@
             <RowDefinition Height="75*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center"  HorizontalAlignment="Center">
+            <TextBlock Margin="5 10">Поиск:</TextBlock>
+            <TextBox Width="200" Margin="5" x:Name="SearchTB" TextChanged="SearchTB_TextChanged"/>
+            <ComboBox DisplayMemberPath="Name" x:Name="SearchTypeCB" Width="200" Margin="5"></ComboBox>
+        </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
-            <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ProductListLW"  Width="630" Height="300" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ProductListLW"  Width="630" Height="300" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ProductListLW_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="600" Height="165">
@@ -24,19 +29,37 @@
                         </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="70*"/>
+                                <ColumnDefinition Width="60*"/>
+                                <ColumnDefinition Width="10*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Image Source="{Binding Image}" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 0">
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel>
                                     <TextBlock  Text="{Binding TypeProduct.Name}" TextWrapping="Wrap"  Margin="0 0 20 0"></TextBlock>
                                     <TextBlock  Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
                                 </StackPanel>
                                 <StackPanel>
                                     <TextBlock  Text="{Binding Article}" ></TextBlock>
                                 </StackPanel>
+                                <StackPanel Orientation="Vertical">
+                                    <ItemsControl ItemsSource="{Binding ProductMaterial}">
+                                        <ItemsControl.ItemTemplate >
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Material.Name}"></TextBlock>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding MinCost}"></TextBlock>
                             </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -49,13 +72,13 @@
         </ListView>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 50 0">
             <TextBlock >
                 <Hyperlink Click="Hyperlink_Click_Back">
                     &lt;
                 </Hyperlink>
             </TextBlock>
-            <TextBlock>
+            <TextBlock x:Name="IndexPageTB">
                 <Hyperlink >
                     1
                 </Hyperlink>
