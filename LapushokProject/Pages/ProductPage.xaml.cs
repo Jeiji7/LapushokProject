@@ -1,4 +1,5 @@
-﻿using LapushokProject.Frames;
+﻿using LapushokProject.BD;
+using LapushokProject.Frames;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,12 +23,17 @@ namespace LapushokProject.Pages
     /// </summary>
     public partial class ProductPage : Page
     {
+        private bool isProgrammaticChange = false;
         public int indexpage = 1;
         public double countPage;
         public int result = 0;
         public ProductPage()
         {
             InitializeComponent();
+            var typeProd = App.db.TypeProduct.ToList();
+            typeProd.Insert(0,new TypeProduct() { ID =0, Name = "Все"});
+            SearchTypeCB.ItemsSource = typeProd;
+            SearchTypeCB.DisplayMemberPath = "Name";
             if (App.db.Product.Count() % 20 == 0)
             {
                 countPage = App.db.Product.Count() / 20;
@@ -41,6 +47,7 @@ namespace LapushokProject.Pages
 
         private void Hyperlink_Click_Next(object sender, RoutedEventArgs e)
         {
+            isProgrammaticChange = true;
             result += 20;
             indexpage++;
             if (indexpage > countPage)
@@ -52,9 +59,11 @@ namespace LapushokProject.Pages
             }
             ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             IndexPageTB.Text = indexpage.ToString();
+            isProgrammaticChange = false;
         }
         private void Hyperlink_Click_Back(object sender, RoutedEventArgs e)
         {
+            isProgrammaticChange = true;
             if (indexpage == 1)
             {
                 MessageBox.Show("Вы в самом начале!!!!");
@@ -64,20 +73,53 @@ namespace LapushokProject.Pages
             indexpage--;
             ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             IndexPageTB.Text = indexpage.ToString();
-
+            isProgrammaticChange = false;
         }
 
 
 
         private void ProductListLW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (isProgrammaticChange)
+            {
+                return;
+            }
+            var product = (Product)ProductListLW.SelectedItem;
+            if (product != null)
+            {
+                ProductEditAndAddPage editAddPage = new ProductEditAndAddPage(product);
+                editAddPage.listUpdate += ListUpdate;
+                editAddPage.ShowDialog();
+            }
+        }
+
+   
+
+        private void Button_Click_Back(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Pages.NavigationPage());
+        }
+
+        private void Button_Click_AddProduct(object sender, RoutedEventArgs e)
+        {
             ProductEditAndAddPage editAddPage = new ProductEditAndAddPage();
+            editAddPage.listUpdate += ListUpdate;
             editAddPage.ShowDialog();
+        }
+
+        private void ListUpdate()
+        {
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
         }
 
         private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).Where(x => x.Name.StartsWith(SearchTB.Text)).ToList();
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material")
+                .OrderBy(x => x.ID).Skip(result).Take(20).Where(x => x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
+            if (SearchTB.Text.Trim() == "")
+            {
+                ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            }
         }
     }
 }

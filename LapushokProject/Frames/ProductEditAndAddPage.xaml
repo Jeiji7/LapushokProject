@@ -5,17 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LapushokProject.Frames"
         mc:Ignorable="d"
-        Title="SettingProduct" Height="450" Width="800">
+        Title="SettingProduct" Height="380" Width="700" Icon="/Images/Лопушок.ico">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="80*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="75*"/>
         </Grid.RowDefinitions>
-        <TextBlock Style="{DynamicResource 'H1 '}">Добавление продукта</TextBlock>
-
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <TextBlock>Название</TextBlock>
-            <TextBlock>Название</TextBlock>
+        <TextBlock Style="{DynamicResource 'H1'}" x:Name="MainNameFrame">Добавление продукта</TextBlock>
+        <Button HorizontalAlignment="Right" Click="Button_Click_Close">Закрыть</Button>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock>Название</TextBlock>
+                <TextBlock>Артикул</TextBlock>
+                <TextBlock>Минемальная цена</TextBlock>
+                <TextBlock>Количество сотрудников</TextBlock>
+                <TextBlock>Номер цеха</TextBlock>
+                <TextBlock>Тип продукта</TextBlock>
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10" Click="Button_Click_SaveProduct">Сохранить</Button>
+            </StackPanel>
+            <StackPanel Width="300">
+                <TextBox x:Name="NameProdTB"></TextBox>
+                <TextBox x:Name="ArticlTB"></TextBox>
+                <TextBox x:Name="MinCostTB"></TextBox>
+                <TextBox x:Name="CountPeopleTB"></TextBox>
+                <TextBox x:Name="ShopNumberTB"></TextBox>
+                <ComboBox x:Name="TypeProdCB" DisplayMemberPath="Name"></ComboBox>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

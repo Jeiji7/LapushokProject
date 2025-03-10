@@ -162,21 +162,22 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Resource Include="Images\Лопушок.ico" />
-  </ItemGroup>
   <ItemGroup>
     <Content Include="BD\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
       <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
     </Content>
     <Content Include="BD\Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Лопушок.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Images\picture.png" />
     <Resource Include="products\paper_0.jpeg" />
     <Resource Include="products\paper_1.jpeg" />

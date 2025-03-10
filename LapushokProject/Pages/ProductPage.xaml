@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center"  HorizontalAlignment="Center">
             <TextBlock Margin="5 10">Поиск:</TextBlock>
-            <TextBox Width="200" Margin="5" x:Name="SearchTB" TextChanged="SearchTB_TextChanged"/>
+            <TextBox Width="200" Margin="5" x:Name="SearchTB" TextChanged="SearchTB_TextChanged" />
             <ComboBox DisplayMemberPath="Name" x:Name="SearchTypeCB" Width="200" Margin="5"></ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
@@ -37,7 +37,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical" Grid.Column="1"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20 0">
                                 <StackPanel>
-                                    <TextBlock  Text="{Binding TypeProduct.Name}" TextWrapping="Wrap"  Margin="0 0 20 0"></TextBlock>
+                                    <TextBlock  Text="{Binding TypeProduct.Name}" TextWrapping="Wrap"></TextBlock>
                                     <TextBlock  Text="{Binding Name}" TextWrapping="Wrap"></TextBlock>
                                 </StackPanel>
                                 <StackPanel>
@@ -88,7 +88,10 @@
                     &gt;
                 </Hyperlink>    
             </TextBlock>
-
+        </StackPanel>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Left" Margin="5 0" Orientation="Horizontal">
+            <Button Margin="5 0 10 5" Click="Button_Click_Back">Назад</Button>
+            <Button Margin="5 0 10 5" Click="Button_Click_AddProduct">Добавить</Button>
         </StackPanel>
     </Grid>
 </Page>
