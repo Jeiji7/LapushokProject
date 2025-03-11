@@ -9,6 +9,14 @@
       Title="NavigationPage">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="371*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Style="{DynamicResource H1}">Страница навигации</TextBlock>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Margin="5" Click="Button_Click_Product">Продукты</Button>
+            <Button Margin="5" Click="Button_Click_Material">Материалы</Button>
+        </StackPanel>
     </Grid>
 </Page>

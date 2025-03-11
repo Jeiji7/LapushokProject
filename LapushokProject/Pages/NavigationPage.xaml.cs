@@ -24,5 +24,15 @@ namespace LapushokProject.Pages
         {
             InitializeComponent();
         }
+
+        private void Button_Click_Product(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Pages.ProductPage());
+        }
+
+        private void Button_Click_Material(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Pages.MaterialPage());
+        }
     }
 }

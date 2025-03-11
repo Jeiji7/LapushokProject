@@ -1,21 +1,10 @@
 ﻿using LapushokProject.BD;
 using LapushokProject.Frames;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+using System.Data.Entity;
 namespace LapushokProject.Pages
 {
     /// <summary>
@@ -23,6 +12,7 @@ namespace LapushokProject.Pages
     /// </summary>
     public partial class ProductPage : Page
     {
+
         private bool isProgrammaticChange = false;
         public int indexpage = 1;
         public double countPage;
@@ -43,9 +33,29 @@ namespace LapushokProject.Pages
             {
                 countPage = App.db.Product.Count() / 20 + 1;
             }
+            SumCost();
             //ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
         }
+        private void SumCost()
+        {
+            var products = App.db.Product
+            .Include("ProductMaterial.Material") // Загружаем связку продукт-материал
+            .ToList();
 
+            // Для каждого продукта считаем общую стоимость материалов
+            foreach (var product in products)
+            {
+                if (product.ProductMaterial != null && product.ProductMaterial.Any())
+                {
+                    // Если материалы есть, считаем общую стоимость
+                    product.MinCost = product.ProductMaterial.Sum(pm => pm.Material.Cost * pm.Count);
+                }
+            }
+            ProductListLW.ItemsSource = products;
+            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            // Сохраняем изменения в базе данных
+            //App.db.SaveChanges();
+        }
         private void Hyperlink_Click_Next(object sender, RoutedEventArgs e)
         {
             isProgrammaticChange = true;
@@ -111,6 +121,7 @@ namespace LapushokProject.Pages
         private void ListUpdate()
         {
             ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            ProductListLW.SelectedItem = null;
         }
 
         private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)

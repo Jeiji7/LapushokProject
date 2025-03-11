@@ -20,17 +20,17 @@
             <ComboBox DisplayMemberPath="Name" x:Name="SearchTypeCB" Width="200" Margin="5" SelectionChanged="SearchTypeCB_SelectionChanged"></ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
-            <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ProductListLW"  Width="630" Height="300" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ProductListLW_SelectionChanged">
+            <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ProductListLW"  Width="730" Height="300" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ProductListLW_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="600" Height="165">
+                    <Grid Width="700" Height="165">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="165"/>
                         </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30*"/>
-                                <ColumnDefinition Width="60*"/>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="25*"/>
+                                <ColumnDefinition Width="55*"/>
+                                <ColumnDefinition Width="20*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Image Source="{Binding Image}" />
@@ -59,7 +59,7 @@
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding MinCost}"></TextBlock>
+                                <TextBlock  Text="{Binding MinCost}"></TextBlock>
                             </StackPanel>
                     </Grid>
                 </DataTemplate>

@@ -23,7 +23,7 @@ namespace LapushokProject
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.NavigationService.Navigate(new Pages.ProductPage());
+            MainFrame.NavigationService.Navigate(new Pages.NavigationPage());
         }
     }
 }

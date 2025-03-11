@@ -20,12 +20,16 @@ namespace LapushokProject.Frames
     /// </summary>
     public partial class ProductEditAndAddPage : Window
     {
+        private ProductMaterial _material = new ProductMaterial();
         private Product prod = new Product();
         public int mode = 0;
         public event Action listUpdate;
         public ProductEditAndAddPage()
         {
             InitializeComponent();
+            EditPanelST.Visibility = Visibility.Hidden;
+            this.Height = 370;
+            MyGrid.RowDefinitions[2].Height = new GridLength(0);
             MainNameFrame.Text = "Добавление продукта";
             TypeProdCB.ItemsSource = App.db.TypeProduct.ToList();
             TypeProdCB.DisplayMemberPath = "Name";
@@ -34,10 +38,14 @@ namespace LapushokProject.Frames
         public ProductEditAndAddPage(Product product)
         {
             InitializeComponent();
+            EditPanelST.Visibility = Visibility.Visible;
+            this.Height = 680;
             prod = product;
             MainNameFrame.Text = "Редактирование продукта";
             TypeProdCB.ItemsSource = App.db.TypeProduct.ToList();
             TypeProdCB.DisplayMemberPath = "Name";
+            ItemsMaterialCB.ItemsSource = App.db.Material.ToList();
+            ItemsMaterialCB.DisplayMemberPath = "Name";
             mode = 2;
             NameProdTB.Text = prod.Name;
             ArticlTB.Text = prod.Article.ToString();
@@ -107,6 +115,24 @@ namespace LapushokProject.Frames
                 MessageBox.Show(ex.Message);
             }
 
+        }
+
+        private void Button_Click_AddMaterial(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _material.ID_prod = prod.ID;
+                _material.ID_mat = ItemsMaterialCB.SelectedIndex + 1;
+                _material.Count = int.Parse(CountMaterialItemTB.Text);
+                App.db.ProductMaterial.Add(_material);
+                App.db.SaveChanges();
+                MessageBox.Show("Материал добавлен");
+                RefreshList();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
