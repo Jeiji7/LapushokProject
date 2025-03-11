@@ -2,7 +2,6 @@
 using LapushokProject.Frames;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,31 +18,30 @@ using System.Windows.Shapes;
 namespace LapushokProject.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ProductPage.xaml
+    /// Логика взаимодействия для MaterialPage.xaml
     /// </summary>
-    public partial class ProductPage : Page
+    public partial class MaterialPage : Page
     {
         private bool isProgrammaticChange = false;
         public int indexpage = 1;
         public double countPage;
         public int result = 0;
-        public ProductPage()
+        public MaterialPage()
         {
             InitializeComponent();
-            var typeProd = App.db.TypeProduct.ToList();
-            typeProd.Insert(0, new TypeProduct() { ID = 0, Name = "Все" });
+            var typeProd = App.db.TypeMaterial.ToList();
+            typeProd.Insert(0, new TypeMaterial() { ID = 0, Name = "Все" });
             SearchTypeCB.ItemsSource = typeProd;
             SearchTypeCB.DisplayMemberPath = "Name";
             SearchTypeCB.SelectedIndex = 0;
-            if (App.db.Product.Count() % 20 == 0)
+            if (App.db.Material.Count() % 20 == 0)
             {
-                countPage = App.db.Product.Count() / 20;
+                countPage = App.db.Material.Count() / 20;
             }
             else
             {
-                countPage = App.db.Product.Count() / 20 + 1;
+                countPage = App.db.Material.Count() / 20 + 1;
             }
-            //ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
         }
 
         private void Hyperlink_Click_Next(object sender, RoutedEventArgs e)
@@ -58,7 +56,7 @@ namespace LapushokProject.Pages
                 MessageBox.Show("Больше страниц нет");
                 return;
             }
-            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            MaterialListLW.ItemsSource = App.db.Material.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             IndexPageTB.Text = indexpage.ToString();
             isProgrammaticChange = false;
         }
@@ -72,23 +70,23 @@ namespace LapushokProject.Pages
             }
             result -= 20;
             indexpage--;
-            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            MaterialListLW.ItemsSource = App.db.Material.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             IndexPageTB.Text = indexpage.ToString();
             isProgrammaticChange = false;
         }
 
 
 
-        private void ProductListLW_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void MaterialListLW_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (isProgrammaticChange)
             {
                 return;
             }
-            var product = (Product)ProductListLW.SelectedItem;
-            if (product != null)
+            var material = (Material)MaterialListLW.SelectedItem;
+            if (material != null)
             {
-                ProductEditAndAddPage editAddPage = new ProductEditAndAddPage(product);
+                MaterialEditAndAddPage editAddPage = new MaterialEditAndAddPage(material);
                 editAddPage.listUpdate += ListUpdate;
                 editAddPage.ShowDialog();
             }
@@ -103,14 +101,14 @@ namespace LapushokProject.Pages
 
         private void Button_Click_AddProduct(object sender, RoutedEventArgs e)
         {
-            ProductEditAndAddPage editAddPage = new ProductEditAndAddPage();
+            MaterialEditAndAddPage editAddPage = new MaterialEditAndAddPage();
             editAddPage.listUpdate += ListUpdate;
             editAddPage.ShowDialog();
         }
 
         private void ListUpdate()
         {
-            ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material").OrderBy(x => x.ID).Skip(result).Take(20).ToList();
+            MaterialListLW.ItemsSource = App.db.Material.OrderBy(x => x.ID).Skip(result).Take(20).ToList();
         }
 
         private void SearchTB_TextChanged(object sender, TextChangedEventArgs e)
@@ -127,34 +125,35 @@ namespace LapushokProject.Pages
         {
             if (SearchTypeCB.SelectedIndex == 0 && SearchTB.Text.Trim() == "")
             {
-                ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material")
+                MaterialListLW.ItemsSource = App.db.Material
                     .OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             }
             else if (SearchTB.Text.Trim() != "" && SearchTypeCB.SelectedIndex == 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                var list = App.db.Material
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
-                ProductListLW.ItemsSource = list;
+                MaterialListLW.ItemsSource = list;
             }
             else if (SearchTB.Text.Trim() == "" && SearchTypeCB.SelectedIndex != 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                var list = App.db.Material
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.ID_type == SearchTypeCB.SelectedIndex).ToList();
-                ProductListLW.ItemsSource = list;
+                MaterialListLW.ItemsSource = list;
             }
-            else if(SearchTB.Text.Trim() != "" && SearchTypeCB.SelectedIndex != 0)
+            else if (SearchTB.Text.Trim() != "" && SearchTypeCB.SelectedIndex != 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                var list = App.db.Material
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.ID_type == SearchTypeCB.SelectedIndex && x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
-                ProductListLW.ItemsSource = list;
+                MaterialListLW.ItemsSource = list;
             }
-           
+
 
             //ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material")
             //    .OrderBy(x => x.ID).Skip(result).Take(20).Where(x => x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
         }
     }
 }
+

@@ -45,8 +45,33 @@ namespace LapushokProject.Frames
             CountPeopleTB.Text = prod.PeopleCount.ToString();
             ShopNumberTB.Text = prod.ShopNumber.ToString();
             TypeProdCB.SelectedIndex = (int)(prod.ID_type - 1);
+            RefreshList();
+        }
+        private void RefreshList()
+        {
+            var list = App.db.ProductMaterial.Where(x => x.ID_prod == prod.ID).ToList();
+            ItemsListMaterialLW.ItemsSource = list;
         }
 
+        private void DeleteButton_Click(object sennder, RoutedEventArgs e)
+        {
+            if (ItemsListMaterialLW.SelectedItem is ProductMaterial selectedMaterial)
+            {
+                // Удаление из базы данных
+                try
+                {
+                    App.db.ProductMaterial.Remove(selectedMaterial); // Удаляем элемент из таблицы
+                    App.db.SaveChanges(); // Сохраняем изменения в базе данных
+                    RefreshList();
+                    MessageBox.Show("Материал усешно удалён!!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении из базы данных: {ex.Message}");
+                    return;
+                }
+            }
+        }
         private void Button_Click_Close(object sender, RoutedEventArgs e)
         {
             Close();

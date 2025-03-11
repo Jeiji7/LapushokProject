@@ -28,6 +28,7 @@ namespace LapushokProject.BD
         public virtual DbSet<Material> Material { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductMaterial> ProductMaterial { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TypeMaterial> TypeMaterial { get; set; }
         public virtual DbSet<TypeProduct> TypeProduct { get; set; }
     }

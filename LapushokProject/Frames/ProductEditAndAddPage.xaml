@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LapushokProject.Frames"
         mc:Ignorable="d"
-        Title="SettingProduct" Height="380" Width="700" Icon="/Images/Лопушок.ico">
+        Title="SettingProduct" Height="680" Width="700" Icon="/Images/Лопушок.ico">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="75*"/>
+            <RowDefinition Height="12.5*"/>
+            <RowDefinition Height="37.5*"/>
+            <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
         <TextBlock Style="{DynamicResource 'H1'}" x:Name="MainNameFrame">Добавление продукта</TextBlock>
-        <Button HorizontalAlignment="Right" Click="Button_Click_Close">Закрыть</Button>
+        <Button HorizontalAlignment="Right" Click="Button_Click_Close" >Закрыть</Button>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel>
                 <TextBlock>Название</TextBlock>
@@ -21,7 +22,7 @@
                 <TextBlock>Количество сотрудников</TextBlock>
                 <TextBlock>Номер цеха</TextBlock>
                 <TextBlock>Тип продукта</TextBlock>
-                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="10" Click="Button_Click_SaveProduct">Сохранить</Button>
+                <Button VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0 0 0 10" Click="Button_Click_SaveProduct">Сохранить</Button>
             </StackPanel>
             <StackPanel Width="300">
                 <TextBox x:Name="NameProdTB"></TextBox>
@@ -32,5 +33,19 @@
                 <ComboBox x:Name="TypeProdCB" DisplayMemberPath="Name"></ComboBox>
             </StackPanel>
         </StackPanel>
+        <ListView x:Name="ItemsListMaterialLW" Margin="10" Grid.Row="2" Height="250" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Material.Name}" Width="400"/>
+                    <GridViewColumn Header="Действие" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Удалить" Click="DeleteButton_Click" Tag="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>
