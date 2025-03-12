@@ -18,6 +18,10 @@
             <TextBlock Margin="5 10">Поиск:</TextBlock>
             <TextBox Width="200" Margin="5" x:Name="SearchTB" TextChanged="SearchTB_TextChanged" />
             <ComboBox DisplayMemberPath="Name" x:Name="SearchTypeCB" Width="200" Margin="5" SelectionChanged="SearchTypeCB_SelectionChanged"></ComboBox>
+            <ComboBox Width="200" Margin="5" x:Name="SortNameCB" SelectionChanged="SortNameCB_SelectionChanged">
+                <ComboBoxItem>Имя возраст.</ComboBoxItem>
+                <ComboBoxItem>Имя убывание.</ComboBoxItem>
+            </ComboBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
             <ListView Background="#eed4fe" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ProductListLW"  Width="730" Height="300" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ProductListLW_SelectionChanged">

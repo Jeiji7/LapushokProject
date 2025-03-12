@@ -136,6 +136,8 @@ namespace LapushokProject.Pages
         }
         private void SearchNameProdAndType()
         {
+            var list = App.db.Product.Include("ProductMaterial.Material")
+                    .OrderBy(x => x.ID).Skip(result).Take(20).ToList();
             if (SearchTypeCB.SelectedIndex == 0 && SearchTB.Text.Trim() == "")
             {
                 ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material")
@@ -143,29 +145,39 @@ namespace LapushokProject.Pages
             }
             else if (SearchTB.Text.Trim() != "" && SearchTypeCB.SelectedIndex == 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                 list = App.db.Product.Include("ProductMaterial.Material")
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
                 ProductListLW.ItemsSource = list;
             }
             else if (SearchTB.Text.Trim() == "" && SearchTypeCB.SelectedIndex != 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                 list = App.db.Product.Include("ProductMaterial.Material")
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.ID_type == SearchTypeCB.SelectedIndex).ToList();
                 ProductListLW.ItemsSource = list;
             }
             else if(SearchTB.Text.Trim() != "" && SearchTypeCB.SelectedIndex != 0)
             {
-                var list = App.db.Product.Include("ProductMaterial.Material")
+                  list = App.db.Product.Include("ProductMaterial.Material")
                     .OrderBy(x => x.ID).Skip(result).Take(20)
                     .Where(x => x.ID_type == SearchTypeCB.SelectedIndex && x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
                 ProductListLW.ItemsSource = list;
             }
-           
+            if (SortNameCB.SelectedIndex == 0)
+            {
+                ProductListLW.ItemsSource = list.OrderBy(x => x.Name).ToList();
+            }
+            else if (SortNameCB.SelectedIndex == 1)
+            {
+                ProductListLW.ItemsSource = list.OrderByDescending(x => x.Name).ToList();
+            }
 
-            //ProductListLW.ItemsSource = App.db.Product.Include("ProductMaterial.Material")
-            //    .OrderBy(x => x.ID).Skip(result).Take(20).Where(x => x.Name.StartsWith(SearchTB.Text.Trim())).ToList();
+        }
+
+        private void SortNameCB_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SearchNameProdAndType();
         }
     }
 }
